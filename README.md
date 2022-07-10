@@ -24,7 +24,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Simple REST API built using Prisma in NestJS
 
 ## Installation
 
@@ -32,42 +32,23 @@
 $ npm install
 ```
 
-## Running the app
+## Running the app in watch mode
 
 ```bash
-# development
-$ npm run start
 
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+## Run docker compose
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ docker compose dev-db -d
 ```
 
-## Support
+## Http requests URLs
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+ROOT = http://localhost:*your port*/
+POST = /cars/createCar
+GET =/cars/all
+GET = /cars/getCar/*id value*
