@@ -1,70 +1,69 @@
 import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { addressDto, carsDto } from "./dto";
-import {request} from "request"
-import { response } from "express";
+import { carsDto } from "./dto";
+import axios from 'axios';
+import { InjectRepository } from "@nestjs/typeorm";
+import { addressEntity, carEntity } from "src/models/cars.entity";
+import { Repository } from "typeorm";
 
 @Injectable({})
 export class CarsService{
-    constructor(private prisma: PrismaService){}
+    constructor(@InjectRepository(carEntity)
+    private readonly carRepository: Repository<carEntity>
+    ){}
     async createCar(dto: carsDto){
-        const car = await this.prisma.car.create({
-            data:{
-                model: dto.model,
-                year: Number(dto.year),
-                power: Number(dto.power)    
-            }
+        const car = await this.carRepository.create({
+            model: dto.model,
+            year: dto.year   
         })
-    return car;
+        return car;
     }
    findall(){
-    return this.prisma.car.findMany()
+    return this.carRepository.find()
    }
    findByID(idInt){
-    return this.prisma.car.findUnique({
+    return this.carRepository.find({
         where:{
             id: idInt,
         }
     })
    }
-   async updateCar(dto: any, idInt: number){
+   async updateCar(dto: carsDto, idInt: number){
     console.log(dto.model)
-    return await this.prisma.car.update({
-        where:{
-            id: idInt,
-        },data:{
-            model: dto.model,
+    return await this.carRepository.update({ id: idInt},
+            {model: dto.model,
             year: Number(dto.year),
-            power: Number(dto.power)   
-        }
-    })
+            power: Number(dto.power)  } 
+    )
    }
    async deleteCar(id: number){
-    return await this.prisma.car.delete({
-        where:{
+    return await this.carRepository.delete({
             id: id,
-        }
     })
    }
 }
 @Injectable({})
 export class AddressService{
-    constructor(private prisma: PrismaService){}
+    constructor(@InjectRepository(addressEntity)
+    private readonly addressRepository: Repository<addressEntity>
+    ){}
     async getCoords(inputedAddress: string){
-        const axios = require('axios')
-        const base_URL="https://maps.googleapis.com/maps/api/geocode/json?address="
-        //const jsonText = JSON.parse(myReq);
-        return await axios.get(base_URL+inputedAddress+"&key="+process.env.API_KEY).then(async res=>{
-            const address = await this.prisma.address.create({
-                data: {
-                    address: inputedAddress,
-                    longitude: res.data.results[0].geometry.location.lat,
-                    latitude: res.data.results[0].geometry.location.lng,
-                }
-            })
-            return address;
-        });
-        }
+        const base_URL="https://maps.googleapis.com/maps/api/geocode/json"
+        const res= await axios.get(`${base_URL}?address=${inputedAddress}&key=${process.env.API_KEY}`)
+        const address = this.addressRepository.create({
+            address: inputedAddress,
+            longitude: res.data.results[0].geometry.location.lng,
+            latitude: res.data.results[0].geometry.location.lat,
+        })
+            
+            // data: {
+            //     address: inputedAddress,
+            //     longitude: res.data.results[0].geometry.location.lng,
+            //     latitude: res.data.results[0].geometry.location.lat,
+            // }
+
+        return address;
+    }
+
 }
 
 
