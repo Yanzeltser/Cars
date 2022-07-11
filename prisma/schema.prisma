@@ -17,3 +17,9 @@ model Car{
   year Int 
   power Int
 }
+model address{
+  id Int @id @default(autoincrement())
+  address String
+  longitude Float
+  latitude Float
+}

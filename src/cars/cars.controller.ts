@@ -1,10 +1,6 @@
 import { Body, Controller, Delete, Get, Post, Put, Req } from "@nestjs/common";
-import { int } from "aws-sdk/clients/datapipeline";
-import { ADDRGETNETWORKPARAMS } from "dns";
-import { identity } from "rxjs";
-import { domainToASCII } from "url";
-import { CarsService } from "./cars.service";
-import { carsDto } from "./dto";
+import {  AddressService, CarsService } from "./cars.service";
+import { addressDto, carsDto } from "./dto";
 import { Param } from "@nestjs/common";
 import {ParseIntPipe} from "@nestjs/common"
 
@@ -33,5 +29,13 @@ export class CarsController{
     @Delete('delete/:id')
     async deleteCar( @Param('id', ParseIntPipe) id: number){
         return this.carsService.deleteCar( id);
+    }
+}
+@Controller('address')
+export class AddressController{
+    constructor(private addressService: AddressService){}
+    @Post('getCoords')
+    async getCoords(@Body() dto: addressDto){
+         return await this.addressService.getCoords(dto.address)
     }
 }

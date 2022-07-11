@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { carsDto } from "./dto";
+import { addressDto, carsDto } from "./dto";
+import {request} from "request"
+import { response } from "express";
 
 @Injectable({})
 export class CarsService{
@@ -45,3 +47,24 @@ export class CarsService{
     })
    }
 }
+@Injectable({})
+export class AddressService{
+    constructor(private prisma: PrismaService){}
+    async getCoords(inputedAddress: string){
+        const axios = require('axios')
+        const base_URL="https://maps.googleapis.com/maps/api/geocode/json?address="
+        //const jsonText = JSON.parse(myReq);
+        return await axios.get(base_URL+inputedAddress+"&key="+process.env.API_KEY).then(async res=>{
+            const address = await this.prisma.address.create({
+                data: {
+                    address: inputedAddress,
+                    longitude: res.data.results[0].geometry.location.lat,
+                    latitude: res.data.results[0].geometry.location.lng,
+                }
+            })
+            return address;
+        });
+        }
+}
+
+

@@ -47,8 +47,9 @@ $ docker compose dev-db -d
 ```
 
 ## Http requests URLs
-
+```bash
 ROOT = http://localhost:*your port*/
 POST = /cars/createCar
 GET =/cars/all
 GET = /cars/getCar/*id value*
+```
