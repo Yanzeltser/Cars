@@ -21,6 +21,7 @@ export class carEntity{
     @Column("int")
     power: number;
 }
+@Entity('address')
 export class addressEntity{
     @PrimaryGeneratedColumn()
     id: number;

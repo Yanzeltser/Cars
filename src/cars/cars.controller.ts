@@ -1,9 +1,9 @@
-import { Body, Controller, Delete, Get, Post, Put, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Put } from "@nestjs/common";
 import {  AddressService, CarsService } from "./cars.service";
 import { addressDto, carsDto } from "./dto";
 import { Param } from "@nestjs/common";
 import {ParseIntPipe} from "@nestjs/common"
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm" 
+
 
 @Controller('cars')
 export class CarsController{
