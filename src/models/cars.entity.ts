@@ -8,7 +8,6 @@ export class carEntity{
     @Column({
         type: 'timestamp',
         default:()=>'CURRENT_TIMESTAMP'
-    
     })
     createdAt: number;
 
@@ -27,11 +26,11 @@ export class addressEntity{
     id: number;
 
     @Column()
-    address: String
+    address: String;
 
     @Column("float")
-    longitude: number
+    longitude: number;
 
     @Column("float")
-    latitude: number
+    latitude: number;
 }

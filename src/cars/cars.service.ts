@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { addressEntity, carEntity } from "src/models/cars.entity";
 import { Repository } from "typeorm";
 import 'dotenv/config'
+
 @Injectable({})
 export class CarsService{
     constructor(@InjectRepository(carEntity)
@@ -53,7 +54,7 @@ export class AddressService{
     async getCoords(inputedAddress: string){
         const base_URL="https://maps.googleapis.com/maps/api/geocode/json"
         const res= await axios.get(`${base_URL}?address=${inputedAddress}&key=${process.env.API_KEY}`)
-        const address = this.addressRepository.create({
+        const address = this.addressRepository.save({
             address: inputedAddress,
             longitude: res.data.results[0].geometry.location.lng,
             latitude: res.data.results[0].geometry.location.lat,
